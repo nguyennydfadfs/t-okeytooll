@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head><meta charset="UTF-8"><title>Tạo Key</title></head>
+<body>
+  <h2>Tạo Key (Admin)</h2>
+  <label>Loại key: 
+    <select id="role">
+      <option value="vip">VIP</option>
+      <option value="normal">Thường</option>
+    </select>
+  </label><br><br>
+  <label>Admin mật khẩu:
+    <input type="password" id="admin" value="phungpham">
+  </label><br><br>
+  <button onclick="createKey()">Tạo Key</button>
+  <p id="result"></p>
+
+  <script>
+    async function createKey() {
+      const role = document.getElementById("role").value;
+      const admin = document.getElementById("admin").value;
+      try {
+        const res = await fetch(`/create-key?admin=${admin}&role=${role}`);
+        const data = await res.json();
+        document.getElementById("result").innerText = data.success
+          ? 'Key mới: ' + data.key
+          : 'Lỗi: ' + data.message;
+      } catch (e) {
+        document.getElementById("result").innerText = 'Lỗi kết nối!';
+      }
+    }
+  </script>
+</body>
+</html>
